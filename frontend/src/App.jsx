@@ -1,40 +1,52 @@
 import React, { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Dashboard from "./pages/Dashboard.jsx";
-import Layout from "./components/Layout.jsx"; 
+
+import Layout from "./components/Layout/Layout";
+
+import Dashboard from "./pages/Dashboard";
+import Income from "./pages/Income";
+import Expense from "./pages/Expense";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+
   const navigate = useNavigate();
 
-  const clearAuth = () => {
-    try {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-    } catch (error) {
-      console.error("clearAuth error:", error);
-    }
-    setUser(null);
-    setToken(null);
-  };
-
   const handleLogout = () => {
-    clearAuth();
+    localStorage.clear();
+    setUser(null);
     navigate("/login");
   };
 
   return (
-  <>
-    <Routes>  
-      <Route element={<Layout />}>
+    <Routes>
+      {/* Public Pages */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Dashboard Layout */}
+      <Route
+        element={
+          <Layout
+            user={user}
+            onLogout={handleLogout}
+          />
+        }
+      >
         <Route path="/" element={<Dashboard />} />
+        <Route path="/income" element={<Income />} />
+        <Route path="/expense" element={<Expense />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
+
+      {/* 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
-  </>
-  ); 
+  );
 };
 
 export default App;

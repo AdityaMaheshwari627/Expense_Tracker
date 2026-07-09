@@ -33,13 +33,13 @@ const menuItems = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ onLogout }) => {
   return (
     <aside className={sidebarStyles.sidebarContainer.base}>
       <div className={sidebarStyles.sidebarInner.base}>
         <div className={sidebarStyles.userProfileContainer.base}>
           <h2 className="text-xl font-bold text-teal-600">
-            Expense Tracker
+            FinTrack 
           </h2>
         </div>
 
@@ -65,7 +65,10 @@ const Sidebar = () => {
         </nav>
 
         <div className="mt-auto p-4">
-          <button className={sidebarStyles.logoutButton.base}>
+          <button
+            onClick={onLogout}
+            className={sidebarStyles.logoutButton.base}
+          >
             <FaSignOutAlt />
             <span>Logout</span>
           </button>

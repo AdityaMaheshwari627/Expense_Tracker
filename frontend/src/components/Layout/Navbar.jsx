@@ -15,7 +15,7 @@ const Navbar = ({ user }) => {
           />
 
           <h1 className={navbarStyles.logoText}>
-            Expense Tracker
+            FinTrack 
           </h1>
         </div>
 

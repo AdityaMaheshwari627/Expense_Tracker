@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
+import ProtectedRoute from "./components/Common/ProtectedRoute";
 
 import Dashboard from "./pages/Dashboard";
 import Income from "./pages/Income";
@@ -31,10 +32,12 @@ const App = () => {
       {/* Dashboard Layout */}
       <Route
         element={
-          <Layout
-            user={user}
-            onLogout={handleLogout}
-          />
+          <ProtectedRoute>
+            <Layout
+              user={user}
+              onLogout={handleLogout}
+            />
+          </ProtectedRoute>
         }
       >
         <Route path="/" element={<Dashboard />} />

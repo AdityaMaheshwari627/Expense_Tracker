@@ -6,7 +6,7 @@ import {
   FaArrowDown,
 } from "react-icons/fa";
 
-const DashboardStats = () => {
+const DashboardStats = ({ data }) => {
   return (
     <div>
       {/* Tagline */}
@@ -25,21 +25,21 @@ const DashboardStats = () => {
 
         <BalanceCard
           title="Total Balance"
-          amount="₹50,000"
+          amount={`₹${data?.savings || 0}`}
           icon={<FaWallet />}
           color="bg-teal-500"
         />
 
         <BalanceCard
           title="Income"
-          amount="₹75,000"
+          amount={`₹${data?.monthlyIncome || 0}`}
           icon={<FaArrowUp />}
           color="bg-green-500"
         />
 
         <BalanceCard
           title="Expense"
-          amount="₹25,000"
+          amount={`₹${data?.monthlyExpense || 0}`}
           icon={<FaArrowDown />}
           color="bg-orange-500"
         />

@@ -3,6 +3,14 @@ import expenseModel from "../models/expenseModel.js";
 
 export async function getDashboardData(req, res) {
     const userId = req.user._id;
+    console.log("Logged User:", req.user);
+    console.log("Logged User ID:", req.user._id);
+
+    const allIncome = await incomeModel.find().lean();
+    console.log("All Income:", allIncome);
+
+    const allExpense = await expenseModel.find().lean();
+    console.log("All Expense:", allExpense);
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
@@ -12,10 +20,15 @@ export async function getDashboardData(req, res) {
             date: { $gte: startOfMonth , $lte: now },
         }).lean();
 
+        console.log("Logged User:", userId);
+        console.log("Incomes:", incomes);
+
         const expenses = await expenseModel.find({
             userId,
             date: { $gte: startOfMonth , $lte: now },
         }).lean();
+
+        console.log("Expenses:", expenses);
 
         const monthlyIncome = incomes.reduce((acc, cur) => acc + Number(cur.amount || 0), 0);
         const monthlyExpense = expenses.reduce((acc, cur) => acc + Number(cur.amount || 0), 0);

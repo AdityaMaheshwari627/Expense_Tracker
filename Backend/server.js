@@ -9,7 +9,7 @@ import expenseRouter from './routes/expenseRoute.js';
 import dashboardRouter from './routes/dashboardRoute.js';
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors());
@@ -32,5 +32,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log('Server started on http://localhost:4000');
-})
+    console.log(`Server started on port ${PORT}`);
+});

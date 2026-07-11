@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000/api/dashboard";
+const API_URL = "https://expense-tracker-rvip.onrender.com";
 
 export const getDashboardData = async (token) => {
   try {

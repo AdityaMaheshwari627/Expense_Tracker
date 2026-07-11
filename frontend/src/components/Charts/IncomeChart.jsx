@@ -6,37 +6,44 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  CartesianGrid,
 } from "recharts";
 
-const data = [
-  { month: "Jan", income: 25000 },
-  { month: "Feb", income: 32000 },
-  { month: "Mar", income: 28000 },
-  { month: "Apr", income: 45000 },
-  { month: "May", income: 38000 },
-  { month: "Jun", income: 50000 },
-];
+const IncomeChart = ({ data }) => {
+  const chartData = [
+    {
+      name: "Income",
+      amount: data?.monthlyIncome || 0,
+    },
+  ];
 
-const IncomeChart = () => {
   return (
     <div className="bg-white rounded-3xl shadow-lg p-6">
+
       <h2 className="text-xl font-bold text-gray-800 mb-5">
-        Income Overview
+        Monthly Income
       </h2>
 
       <ResponsiveContainer width="100%" height={320}>
-        <BarChart data={data}>
-          <XAxis dataKey="month" />
+        <BarChart data={chartData}>
+
+          <CartesianGrid strokeDasharray="3 3" />
+
+          <XAxis dataKey="name" />
+
           <YAxis />
+
           <Tooltip />
 
           <Bar
-            dataKey="income"
+            dataKey="amount"
             fill="#14b8a6"
-            radius={[10, 10, 0, 0]}
+            radius={[8, 8, 0, 0]}
           />
+
         </BarChart>
       </ResponsiveContainer>
+
     </div>
   );
 };

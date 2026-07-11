@@ -1,6 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { addIncome, getIncome } from "../services/incomeService";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+import {
+  addIncome,
+  getIncome,
+  deleteIncome,
+  updateIncome,
+} from "../services/incomeService";
+
+import IncomeForm from "../components/Income/IncomeForm";
+import IncomeList from "../components/Income/IncomeList";
 
 const Income = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +20,38 @@ const Income = () => {
   });
 
   const [incomeList, setIncomeList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+
+  useEffect(() => {
+    fetchIncome();
+  }, []);
+
+  const resetForm = () => {
+    setFormData({
+      description: "",
+      amount: "",
+      category: "",
+      date: "",
+    });
+
+    setIsEditing(false);
+    setEditId(null);
+  };
+
+  const fetchIncome = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const data = await getIncome(token);
+
+      setIncomeList(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load income");
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -22,134 +63,117 @@ const Income = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !formData.description ||
+      !formData.amount ||
+      !formData.category ||
+      !formData.date
+    ) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       const token = localStorage.getItem("token");
 
-      const res = await addIncome(formData, token);
+      let res;
+
+      if (isEditing) {
+        res = await updateIncome(editId, formData, token);
+      } else {
+        res = await addIncome(formData, token);
+      }
 
       if (res.success) {
-        toast.success("Income Added Successfully");
+        toast.success(
+          isEditing
+            ? "Income Updated Successfully"
+            : "Income Added Successfully"
+        );
 
-        setFormData({
-          description: "",
-          amount: "",
-          category: "",
-          date: "",
-        });
-
+        resetForm();
         fetchIncome();
       }
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to add income"
+        error.response?.data?.message ||
+          "Operation Failed"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this income?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await deleteIncome(id, token);
+
+      if (res.success) {
+        toast.success(res.message);
+        fetchIncome();
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Delete Failed"
       );
     }
   };
 
-  const fetchIncome = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  const handleEdit = (income) => {
+    setFormData({
+      description: income.description,
+      amount: income.amount,
+      category: income.category,
+      date: income.date.slice(0, 10),
+    });
 
-      const res = await getIncome(token);
+    setEditId(income._id);
+    setIsEditing(true);
 
-      console.log("Income API Response:", res);
-
-      if (res.success) {
-        setIncomeList(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
-  useEffect(() => {
-    fetchIncome();
-  }, []);
+  const handleCancel = () => {
+    resetForm();
+  };
 
   return (
     <div className="p-6 space-y-6">
 
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-800">
           Income
         </h1>
 
-        <p className="text-gray-500 mt-1">
+        <p className="text-gray-500 mt-2">
           Add and manage all your income sources.
         </p>
       </div>
 
-      {/* Add Income Form */}
-      <div className="bg-white rounded-2xl shadow-md p-6">
+      <IncomeForm
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        loading={loading}
+        isEditing={isEditing}
+        handleCancel={handleCancel}
+      />
 
-        <h2 className="text-xl font-semibold mb-5">
-          Add New Income
-        </h2>
-
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-5"
-        >
-
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            value={formData.description}
-            onChange={handleChange}
-            className="border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-          />
-
-          <input
-            type="number"
-            name="amount"
-            placeholder="Amount"
-            value={formData.amount}
-            onChange={handleChange}
-            className="border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-          />
-
-          <input
-            type="text"
-            name="category"
-            placeholder="Category"
-            value={formData.category}
-            onChange={handleChange}
-            className="border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-          />
-
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-          />
-
-          <button
-            type="submit"
-            className="bg-teal-600 text-white rounded-xl py-3 hover:bg-teal-700 transition md:col-span-2"
-          >
-            Add Income
-          </button>
-
-        </form>
-
-      </div>
-
-      {/* Income List */}
-      <div className="bg-white rounded-2xl shadow-md p-6">
-
-        <h2 className="text-xl font-semibold mb-4">
-          Income History
-        </h2>
-
-        <p className="text-gray-500">
-          No income added yet
-        </p>
-
-      </div>
+      <IncomeList
+        incomeList={incomeList}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
 
     </div>
   );

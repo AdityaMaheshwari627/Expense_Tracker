@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://expense-tracker-rvip.onrender.com";
+const API_URL = "https://expense-tracker-rvip.onrender.com/api/income";
 
 const getConfig = (token) => ({
   headers: {

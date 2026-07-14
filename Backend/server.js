@@ -17,8 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 
 
-
 // DB
+console.log("MONGO_URI =", process.env.MONGO_URI);
 connectDB();
 
 // Routes

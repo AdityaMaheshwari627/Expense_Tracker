@@ -19,33 +19,37 @@ const Navbar = ({ user }) => {
           />
 
           <h1 className={navbarStyles.logoText}>
-            FinTrack 
+            FinTrack
           </h1>
         </div>
-        <button
-          onClick={toggleTheme}
-          className="mr-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition"
-        >
-          {darkMode ? (
-            <FaSun className="text-yellow-400 text-lg" />
-          ) : (
-            <FaMoon className="text-gray-700 text-lg" />
-          )}
-        </button>
-        {/* User */}
-        <div className={navbarStyles.userButton}>
-          <div className={navbarStyles.userAvatar}>
-            {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
-          </div>
 
-          <div className={navbarStyles.userTextContainer}>
-            <p className={navbarStyles.userName}>
-              {user?.name || "Aditya"}
-            </p>
+        {/* Theme + User */}
+        <div className="flex items-center">
+          <button
+            onClick={toggleTheme}
+            className="mr-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all"
+          >
+            {darkMode ? (
+              <FaSun className="text-yellow-400 text-lg" />
+            ) : (
+              <FaMoon className="text-gray-700 dark:text-white text-lg" />
+            )}
+          </button>
 
-            <p className={navbarStyles.userEmail}>
-              {user?.email || "aditya@gmail.com"}
-            </p>
+          <div className={navbarStyles.userButton}>
+            <div className={navbarStyles.userAvatar}>
+              {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
+            </div>
+
+            <div className={navbarStyles.userTextContainer}>
+              <p className={navbarStyles.userName}>
+                {user?.name || "Aditya"}
+              </p>
+
+              <p className={navbarStyles.userEmail}>
+                {user?.email || "aditya@gmail.com"}
+              </p>
+            </div>
           </div>
         </div>
       </div>

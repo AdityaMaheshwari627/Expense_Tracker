@@ -540,7 +540,7 @@ export const sidebarStyles = {
   },
   
   sidebarInner: {
-    base: "bg-white border-r  border-gray-200 shadow-md h-full flex flex-col"
+    base: "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-md h-full flex flex-col transition-colors duration-300"
   },
   
   // User profile section
@@ -560,9 +560,9 @@ export const sidebarStyles = {
   },
   
   menuItem: {
-    base: "relative flex items-center gap-3 py-3 rounded-xl font-medium transition-all duration-200",
+    base: "relative flex items-center gap-3 py-3 rounded-xl font-medium transition-all duration-300",
     active: "text-teal-600 bg-teal-50",
-    inactive: "text-gray-600 hover:text-teal-700 hover:bg-gray-50",
+    inactive: "text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 hover:bg-gray-50 dark:hover:bg-gray-800",
     collapsed: "justify-center px-0 mx-2",
     expanded: "px-4"
   },
@@ -592,7 +592,7 @@ export const sidebarStyles = {
   },
   
   logoutButton: {
-    base: "flex items-center gap-3 py-2 rounded-xl font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 w-full mt-1",
+    base: "flex items-center gap-3 py-2 rounded-xl font-medium text-gray-600 dark:text-gray-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 w-full mt-1",
     collapsed: "justify-center"
   },
   

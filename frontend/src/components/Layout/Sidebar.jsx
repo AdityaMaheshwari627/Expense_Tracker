@@ -38,7 +38,7 @@ const Sidebar = ({ onLogout }) => {
     <aside className={sidebarStyles.sidebarContainer.base}>
       <div className={sidebarStyles.sidebarInner.base}>
         <div className={sidebarStyles.userProfileContainer.base}>
-          <h2 className="text-xl font-bold text-teal-600">
+          
             FinTrack 
           </h2>
         </div>

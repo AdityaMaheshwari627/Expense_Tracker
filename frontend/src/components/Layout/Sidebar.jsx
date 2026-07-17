@@ -38,8 +38,8 @@ const Sidebar = ({ onLogout }) => {
     <aside className={sidebarStyles.sidebarContainer.base}>
       <div className={sidebarStyles.sidebarInner.base}>
         <div className={sidebarStyles.userProfileContainer.base}>
-          
-            FinTrack 
+          <h2 className="text-xl font-bold text-teal-600 dark:text-teal-400">
+            FinTrack
           </h2>
         </div>
 
@@ -50,12 +50,12 @@ const Sidebar = ({ onLogout }) => {
               to={item.path}
               className={({ isActive }) =>
                 `${sidebarStyles.menuItem.base}
-                 ${
-                   isActive
-                     ? sidebarStyles.menuItem.active
-                     : sidebarStyles.menuItem.inactive
-                 }
-                 ${sidebarStyles.menuItem.expanded}`
+                ${
+                  isActive
+                    ? sidebarStyles.menuItem.active
+                    : sidebarStyles.menuItem.inactive
+                }
+                ${sidebarStyles.menuItem.expanded}`
               }
             >
               {item.icon}

@@ -646,10 +646,10 @@ export const styles = {
   // Stat Card Styles
   statCards: {
     grid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-6",
-    card: "bg-white p-5 rounded-2xl shadow-sm border border-gray-100",
+    card: "bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300",
     cardHeader: "flex justify-between items-start",
-    cardTitle: "text-sm text-gray-600",
-    cardValue: "text-2xl font-bold text-gray-800 mt-1",
+    cardTitle: "text-sm text-gray-600 dark:text-gray-300",
+    cardValue: "text-2xl font-bold text-gray-800 dark:text-white mt-1",
     iconContainer: (color) => `bg-${color}-100 p-2 rounded-lg`,
     icon: (color) => `w-5 h-5 text-${color}-600`,
     cardFooter: "text-xs text-gray-500 mt-3",
@@ -664,9 +664,9 @@ export const styles = {
 
   // Card Styles
   cards: {
-    base: "bg-white rounded-2xl p-6 shadow-sm border border-gray-100",
+    base: "bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300",
     header: "flex justify-between items-center mb-6",
-    title: "text-xl font-bold text-gray-800 flex items-center gap-3",
+    title: "text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3",
     titleIcon: "w-6 h-6",
   },
 

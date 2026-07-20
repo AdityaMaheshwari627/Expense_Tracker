@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://expense-tracker-rvip.onrender.com/api/user";
+const API = "http://localhost:4000/api/user";
 
 const getConfig = () => ({
   headers: {

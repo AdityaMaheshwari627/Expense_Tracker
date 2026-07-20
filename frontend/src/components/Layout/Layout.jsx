@@ -1,8 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import { styles } from "../../assets/dummystyles";
+import Navbar from "./Navbar";
 import { useTheme } from "../../context/ThemeContext";
 
 const Layout = ({ user, onLogout }) => {
@@ -10,17 +9,22 @@ const Layout = ({ user, onLogout }) => {
 
   return (
     <div
-      className={`${styles.layout.root} ${
+      className={`min-h-screen flex transition-all duration-300 ${
         darkMode
-          ? "bg-gray-900 text-white"
-          : "bg-gradient-to-br from-gray-50 to-gray-100"
-      } transition-all duration-300`}
+          ? "bg-[#0B1120] text-white"
+          : "bg-gradient-to-br from-slate-100 via-white to-slate-100 text-gray-900"
+      }`}
     >
+      {/* Sidebar */}
       <Sidebar onLogout={onLogout} />
 
-      <div className={styles.layout.mainContainer(false)}>
-        <Navbar user={user} onLogout={onLogout} />
-        <Outlet />
+      {/* Main Content */}
+      <div className="flex-1 lg:ml-72 min-h-screen">
+        <Navbar onLogout={onLogout} />
+
+        <main className="p-8">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

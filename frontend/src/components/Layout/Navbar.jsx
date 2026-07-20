@@ -1,57 +1,67 @@
 import React from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
-import { navbarStyles } from "../../assets/dummystyles";
 import hero from "../../assets/hero.png";
 import { useTheme } from "../../context/ThemeContext";
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const { darkMode, toggleTheme } = useTheme();
 
   return (
-    <header className={navbarStyles.header}>
-      <div className={navbarStyles.container}>
+    <header className="sticky top-0 z-40 px-8 pt-6">
+      <div
+        className={`h-24 rounded-3xl border backdrop-blur-xl
+        flex items-center justify-between px-8 transition-all duration-300
+        
+        ${
+          darkMode
+            ? "bg-[#111827]/90 border-gray-800 shadow-[0_0_35px_rgba(20,184,166,0.08)]"
+            : "bg-white/90 border-gray-200 shadow-xl"
+        }`}
+      >
         {/* Logo */}
-        <div className={navbarStyles.logoContainer}>
+        <div className="flex items-center gap-4">
           <img
             src={hero}
-            alt="Logo"
-            className={navbarStyles.logoImage}
+            alt="FinTrack"
+            className="w-16 h-16 object-contain"
           />
 
-          <h1 className={navbarStyles.logoText}>
-            FinTrack
+          <h1
+            className={`text-4xl font-extrabold tracking-wide ${
+              darkMode ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Fin<span className="text-teal-500">Track</span>
           </h1>
         </div>
 
-        {/* Theme + User */}
-        <div className="flex items-center">
-          <button
-            onClick={toggleTheme}
-            className="mr-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all"
-          >
-            {darkMode ? (
-              <FaSun className="text-yellow-400 text-lg" />
-            ) : (
-              <FaMoon className="text-gray-700 dark:text-white text-lg" />
-            )}
-          </button>
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className={`
+            h-14 w-28 rounded-full
+            flex items-center justify-center gap-5
+            transition-all duration-300
 
-          <div className={navbarStyles.userButton}>
-            <div className={navbarStyles.userAvatar}>
-              {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
-            </div>
+            ${
+              darkMode
+                ? "bg-[#1F2937] border border-gray-700 hover:bg-[#273549]"
+                : "bg-slate-100 hover:bg-slate-200"
+            }
+          `}
+        >
+          <FaSun
+            className={`text-xl ${
+              darkMode ? "text-gray-500" : "text-yellow-500"
+            }`}
+          />
 
-            <div className={navbarStyles.userTextContainer}>
-              <p className={navbarStyles.userName}>
-                {user?.name || "Aditya"}
-              </p>
-
-              <p className={navbarStyles.userEmail}>
-                {user?.email || "aditya@gmail.com"}
-              </p>
-            </div>
-          </div>
-        </div>
+          <FaMoon
+            className={`text-xl ${
+              darkMode ? "text-cyan-400" : "text-gray-500"
+            }`}
+          />
+        </button>
       </div>
     </header>
   );

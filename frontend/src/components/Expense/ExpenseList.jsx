@@ -1,85 +1,102 @@
 import React from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 const ExpenseList = ({
   expenseList,
   handleDelete,
   handleEdit,
 }) => {
-  if (expenseList.length === 0) {
-    return (
-      <div className="bg-white rounded-2xl shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-5">
-          Expense History
-        </h2>
-
-        <p className="text-gray-500">
-          No expense added yet.
-        </p>
-      </div>
-    );
-  }
+  const { darkMode } = useTheme();
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6">
-
-      <h2 className="text-xl font-semibold mb-5">
+    <div
+      className={`rounded-2xl shadow-lg p-6 transition-all duration-300 ${
+        darkMode
+          ? "bg-[#111827] border border-gray-800"
+          : "bg-white border border-gray-200"
+      }`}
+    >
+      <h2
+        className={`text-2xl font-bold mb-6 ${
+          darkMode ? "text-white" : "text-gray-900"
+        }`}
+      >
         Expense History
       </h2>
 
-      <div className="space-y-4">
+      {expenseList.length === 0 ? (
+        <p
+          className={`text-center py-10 ${
+            darkMode ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
+          No expense added yet.
+        </p>
+      ) : (
+        <div className="space-y-4">
+          {expenseList.map((item) => (
+            <div
+              key={item._id}
+              className={`flex justify-between items-center rounded-xl p-4 transition-all ${
+                darkMode
+                  ? "bg-[#1E293B] hover:bg-[#263449]"
+                  : "bg-gray-50 hover:bg-gray-100 border"
+              }`}
+            >
+              <div>
+                <h3
+                  className={`text-lg font-semibold ${
+                    darkMode ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {item.description}
+                </h3>
 
-        {expenseList.map((item) => (
-          <div
-            key={item._id}
-            className="flex justify-between items-center border rounded-xl p-4 hover:shadow-md transition"
-          >
+                <p
+                  className={
+                    darkMode
+                      ? "text-gray-400"
+                      : "text-gray-600"
+                  }
+                >
+                  {item.category}
+                </p>
 
-            <div>
+                <p
+                  className={
+                    darkMode
+                      ? "text-gray-500 text-sm"
+                      : "text-gray-400 text-sm"
+                  }
+                >
+                  {new Date(item.date).toLocaleDateString()}
+                </p>
+              </div>
 
-              <h3 className="font-semibold text-lg">
-                {item.description}
-              </h3>
+              <div className="flex items-center gap-5">
+                <h2 className="text-red-500 text-2xl font-bold">
+                  ₹{Number(item.amount).toLocaleString()}
+                </h2>
 
-              <p className="text-gray-500">
-                {item.category}
-              </p>
+                <button
+                  onClick={() => handleEdit(item)}
+                  className="text-blue-500 hover:text-blue-700 transition"
+                >
+                  <FaEdit size={18} />
+                </button>
 
-              <p className="text-sm text-gray-400">
-                {new Date(item.date).toLocaleDateString()}
-              </p>
-
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="text-red-500 hover:text-red-700 transition"
+                >
+                  <FaTrash size={18} />
+                </button>
+              </div>
             </div>
-
-            <div className="flex items-center gap-5">
-
-              <h2 className="text-xl font-bold text-red-600">
-                ₹{item.amount}
-              </h2>
-
-              <button
-                onClick={() => handleEdit(item)}
-                className="text-blue-600 hover:text-blue-800 transition"
-                title="Edit Expense"
-              >
-                <FaEdit size={18} />
-              </button>
-
-              <button
-                onClick={() => handleDelete(item._id)}
-                className="text-red-600 hover:text-red-800 transition"
-                title="Delete Expense"
-              >
-                <FaTrash size={18} />
-              </button>
-
-            </div>
-
-          </div>
-        ))}
-
-      </div>
-
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import DashboardStats from "../components/Dashboard/DashboardStats";
-import IncomeChart from "../components/Charts/IncomeChart";
 import ExpensePieChart from "../components/Charts/PieChart";
 import RecentTransactions from "../components/Dashboard/RecentTransactions";
 import TopCategories from "../components/Dashboard/TopCategories";
+import IncomeCard from "../components/Dashboard/IncomeCard";
 
 import { getDashboardData } from "../services/dashboardService";
 import { useTheme } from "../context/ThemeContext";
@@ -48,11 +48,11 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-[1700px] mx-auto space-y-6 lg:space-y-8">
 
       {/* Hero */}
 
-      <section>
+      <section className="px-1">
 
         <p
           className={`text-lg ${
@@ -63,7 +63,7 @@ const Dashboard = () => {
         </p>
 
         <h1
-          className={`mt-2 text-5xl font-extrabold leading-tight ${
+          className={`mt-2 text-4xl md:text-5xl xl:text-6xl font-extrabold leading-tight ${
             darkMode ? "text-white" : "text-gray-900"
           }`}
         >
@@ -90,7 +90,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
 
         <div className="xl:col-span-2">
-          <IncomeChart data={dashboardData} />
+          <IncomeCard data={dashboardData} />
         </div>
 
         <ExpensePieChart data={dashboardData} />

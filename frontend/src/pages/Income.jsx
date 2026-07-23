@@ -44,12 +44,23 @@ const Income = () => {
   const fetchIncome = async () => {
     try {
       const token = localStorage.getItem("token");
-      const data = await getIncome(token);
 
-      setIncomeList(Array.isArray(data) ? data : []);
+      const res = await getIncome(token);
+
+      console.log("Income API:", res);
+
+      if (res.success) {
+        setIncomeList(res.data || []);
+      } else {
+        setIncomeList([]);
+      }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load income");
+      setIncomeList([]);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to load income"
+      );
     }
   };
 
@@ -81,22 +92,28 @@ const Income = () => {
       let res;
 
       if (isEditing) {
-        res = await updateIncome(editId, formData, token);
+        res = await updateIncome(
+          editId,
+          formData,
+          token
+        );
       } else {
-        res = await addIncome(formData, token);
+        res = await addIncome(
+          formData,
+          token
+        );
       }
 
       if (res.success) {
-        toast.success(
-          isEditing
-            ? "Income Updated Successfully"
-            : "Income Added Successfully"
-        );
+        toast.success(res.message);
 
         resetForm();
-        fetchIncome();
+
+        await fetchIncome();
       }
     } catch (error) {
+      console.log(error);
+
       toast.error(
         error.response?.data?.message ||
           "Operation Failed"
@@ -112,11 +129,15 @@ const Income = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await deleteIncome(id, token);
+      const res = await deleteIncome(
+        id,
+        token
+      );
 
       if (res.success) {
         toast.success(res.message);
-        fetchIncome();
+
+        await fetchIncome();
       }
     } catch (error) {
       toast.error(
@@ -143,20 +164,17 @@ const Income = () => {
     });
   };
 
-  const handleCancel = () => {
-    resetForm();
-  };
-
   return (
     <div className="p-6 space-y-6">
 
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-3xl font-bold">
           Income
         </h1>
 
         <p className="text-gray-500 mt-2">
-          Add and manage all your income sources.
+          Add and manage all your income
+          sources.
         </p>
       </div>
 
@@ -166,7 +184,7 @@ const Income = () => {
         handleSubmit={handleSubmit}
         loading={loading}
         isEditing={isEditing}
-        handleCancel={handleCancel}
+        handleCancel={resetForm}
       />
 
       <IncomeList

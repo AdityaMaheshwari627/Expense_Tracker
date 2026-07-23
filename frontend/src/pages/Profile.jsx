@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
+import { useTheme } from "../context/ThemeContext";
 import {
   getCurrentUser,
   updateProfile,
 } from "../services/authService";
 
 const Profile = () => {
+  const { darkMode } = useTheme();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -25,8 +27,8 @@ const Profile = () => {
       if (res.success) {
         setUser(res.user);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
       toast.error("Failed to load profile");
     }
   };
@@ -47,7 +49,7 @@ const Profile = () => {
       const res = await updateProfile(user);
 
       if (res.success) {
-        toast.success("Profile Updated Successfully");
+        toast.success("Profile Updated");
 
         localStorage.setItem(
           "user",
@@ -56,10 +58,10 @@ const Profile = () => {
 
         setUser(res.user);
       }
-    } catch (error) {
+    } catch (err) {
       toast.error(
-        error.response?.data?.message ||
-          "Profile update failed"
+        err.response?.data?.message ||
+          "Profile Update Failed"
       );
     } finally {
       setLoading(false);
@@ -67,20 +69,34 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="max-w-3xl mx-auto p-6">
 
-      <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+      <div
+        className={`rounded-3xl shadow-xl p-8 ${
+          darkMode
+            ? "bg-[#111827] border border-gray-800"
+            : "bg-white"
+        }`}
+      >
 
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">
+        <h1
+          className={`text-4xl font-bold mb-8 ${
+            darkMode
+              ? "text-white"
+              : "text-gray-900"
+          }`}
+        >
           My Profile
         </h1>
 
         <div className="flex justify-center mb-8">
 
-          <div className="w-24 h-24 rounded-full bg-teal-600 flex items-center justify-center text-white text-4xl font-bold">
+          <div className="w-28 h-28 rounded-full bg-teal-600 flex items-center justify-center text-white text-5xl font-bold">
+
             {user.name
               ? user.name.charAt(0).toUpperCase()
               : "U"}
+
           </div>
 
         </div>
@@ -92,7 +108,13 @@ const Profile = () => {
 
           <div>
 
-            <label className="block mb-2 font-medium">
+            <label
+              className={`block mb-2 font-semibold ${
+                darkMode
+                  ? "text-white"
+                  : "text-gray-700"
+              }`}
+            >
               Name
             </label>
 
@@ -101,14 +123,24 @@ const Profile = () => {
               name="name"
               value={user.name}
               onChange={handleChange}
-              className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
+              className={`w-full px-4 py-3 rounded-xl border outline-none transition-all ${
+                darkMode
+                  ? "bg-[#1E293B] border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500"
+                  : "bg-white border-gray-300 text-gray-900 focus:ring-2 focus:ring-teal-500"
+              }`}
             />
 
           </div>
 
           <div>
 
-            <label className="block mb-2 font-medium">
+            <label
+              className={`block mb-2 font-semibold ${
+                darkMode
+                  ? "text-white"
+                  : "text-gray-700"
+              }`}
+            >
               Email
             </label>
 
@@ -117,7 +149,11 @@ const Profile = () => {
               name="email"
               value={user.email}
               onChange={handleChange}
-              className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
+              className={`w-full px-4 py-3 rounded-xl border outline-none transition-all ${
+                darkMode
+                  ? "bg-[#1E293B] border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500"
+                  : "bg-white border-gray-300 text-gray-900 focus:ring-2 focus:ring-teal-500"
+              }`}
             />
 
           </div>
@@ -125,9 +161,11 @@ const Profile = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold transition disabled:opacity-60"
+            className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold transition"
           >
-            {loading ? "Updating..." : "Save Changes"}
+            {loading
+              ? "Updating..."
+              : "Save Changes"}
           </button>
 
         </form>
